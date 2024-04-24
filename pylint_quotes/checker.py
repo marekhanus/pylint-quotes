@@ -156,7 +156,7 @@ class StringQuoteChecker(BaseTokenChecker):
             node_type: the type of node being operated on.
         """
         # if there is no docstring, don't need to do anything.
-        if node.doc is not None:
+        if node.doc_node is not None:
 
             # the module is everything, so to find the docstring, we
             # iterate line by line from the start until the first element

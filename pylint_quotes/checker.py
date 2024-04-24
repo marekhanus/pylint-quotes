@@ -286,10 +286,10 @@ class StringQuoteChecker(BaseTokenChecker):
 
         # single quote strings
 
-        preferred_quote = SMART_QUOTE_OPTS.get(self.config.string_quote)
+        preferred_quote = SMART_QUOTE_OPTS.get(self.linter.config.string_quote)
 
         # Smart case.
-        if self.config.string_quote in SMART_CONFIG_OPTS:
+        if self.linter.config.string_quote in SMART_CONFIG_OPTS:
             other_quote = next(q for q in QUOTES if q != preferred_quote)
             # If using the other quote avoids escaping, we switch to the other quote.
             if preferred_quote in token[i + 1:-1] and other_quote not in token[i + 1:-1]:
@@ -311,7 +311,7 @@ class StringQuoteChecker(BaseTokenChecker):
                 from tokenization, giving the (token, quote, row number, column).
         """
         _, triple, row, col = quote_record
-        if triple != TRIPLE_QUOTE_OPTS.get(self.config.triple_quote):
+        if triple != TRIPLE_QUOTE_OPTS.get(self.linter.config.triple_quote):
             self._invalid_triple_quote(triple, row, col)
 
     def _check_docstring_quotes(self, quote_record):
@@ -322,7 +322,7 @@ class StringQuoteChecker(BaseTokenChecker):
                 from tokenization, giving the (token, quote, row number).
         """
         _, triple, row, col = quote_record
-        if triple != TRIPLE_QUOTE_OPTS.get(self.config.docstring_quote):
+        if triple != TRIPLE_QUOTE_OPTS.get(self.linter.config.docstring_quote):
             self._invalid_docstring_quote(triple, row, col)
 
     def _invalid_string_quote(self, quote, row, correct_quote=None, col=None):
@@ -336,7 +336,7 @@ class StringQuoteChecker(BaseTokenChecker):
             col: The column the quote characters were found on.
         """
         if not correct_quote:
-            correct_quote = SMART_QUOTE_OPTS.get(self.config.string_quote)
+            correct_quote = SMART_QUOTE_OPTS.get(self.linter.config.string_quote)
 
         self.add_message(
             'invalid-string-quote',
@@ -376,7 +376,7 @@ class StringQuoteChecker(BaseTokenChecker):
         self.add_message(
             'invalid-triple-quote',
             line=row,
-            args=(quote, TRIPLE_QUOTE_OPTS.get(self.config.triple_quote)),
+            args=(quote, TRIPLE_QUOTE_OPTS.get(self.linter.config.triple_quote)),
             **self.get_offset(col)
         )
 
@@ -391,6 +391,6 @@ class StringQuoteChecker(BaseTokenChecker):
         self.add_message(
             'invalid-docstring-quote',
             line=row,
-            args=(quote, TRIPLE_QUOTE_OPTS.get(self.config.docstring_quote)),
+            args=(quote, TRIPLE_QUOTE_OPTS.get(self.linter.config.docstring_quote)),
             **self.get_offset(col)
         )
